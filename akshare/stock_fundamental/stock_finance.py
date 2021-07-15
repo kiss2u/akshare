@@ -81,7 +81,7 @@ def stock_financial_analysis_indicator(stock: str = "600004") -> pd.DataFrame:
     year_context = soup.find(attrs={"id": "con02-1"}).find("table").find_all("a")
     year_list = [item.text for item in year_context]
     out_df = pd.DataFrame()
-    for year_item in tqdm(year_list):
+    for year_item in tqdm(year_list, leave=False):
         url = f"https://money.finance.sina.com.cn/corp/go.php/vFD_FinancialGuideLine/stockid/{stock}/ctrl/{year_item}/displaytype/4.phtml"
         r = requests.get(url)
         temp_df = pd.read_html(r.text)[12].iloc[:, :-1]
@@ -328,7 +328,7 @@ def stock_main_stock_holder(stock: str = "600004") -> pd.DataFrame:
 
 
 if __name__ == '__main__':
-    stock_financial_report_sina_df = stock_financial_report_sina(stock="600004", symbol="现金流量表")
+    stock_financial_report_sina_df = stock_financial_report_sina(stock="600009", symbol="现金流量表")
     print(stock_financial_report_sina_df)
 
     stock_financial_report_sina_df = stock_financial_report_sina(stock="600004", symbol="资产负债表")
@@ -337,7 +337,7 @@ if __name__ == '__main__':
     stock_financial_abstract_df = stock_financial_abstract(stock="600004")
     print(stock_financial_abstract_df)
 
-    stock_financial_analysis_indicator_df = stock_financial_analysis_indicator(stock="600004")
+    stock_financial_analysis_indicator_df = stock_financial_analysis_indicator(stock="002230")
     print(stock_financial_analysis_indicator_df)
 
     stock_history_dividend_df = stock_history_dividend()
@@ -353,6 +353,7 @@ if __name__ == '__main__':
 
     stock_ipo_info_df = stock_ipo_info(stock="600004")
     print(stock_ipo_info_df)
+
     stock_add_stock_df = stock_add_stock(stock="600004")
     print(stock_add_stock_df)
 

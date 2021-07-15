@@ -1,5 +1,5 @@
 """
-Date: 2020/10/18 19:54
+Date: 2021/4/23 16:28
 Desc: 获取中国证券投资基金业协会-信息公示数据
 中国证券投资基金业协会-新版: http://gs.amac.org.cn
 中国证券投资基金业协会-旧版: http://www1.amac.org.cn/
@@ -103,11 +103,11 @@ def amac_member_info() -> pd.DataFrame:
 
 # 中国证券投资基金业协会-信息公示-从业人员信息
 # 中国证券投资基金业协会-信息公示-从业人员信息-基金从业人员资格注册信息
-def amac_person_org_list() -> pd.DataFrame:
+def amac_person_fund_org_list() -> pd.DataFrame:
     """
     中国证券投资基金业协会-信息公示-从业人员信息-基金从业人员资格注册信息
-    http://gs.amac.org.cn/amac-infodisc/res/pof/person/personOrgList.html
-    :return:
+    https://gs.amac.org.cn/amac-infodisc/res/pof/person/personOrgList.html
+    :return: 基金从业人员资格注册信息
     :rtype: pandas.DataFrame
     """
     data = get_data(url=amac_person_org_list_url, payload=amac_person_org_list_payload)
@@ -131,6 +131,42 @@ def amac_person_org_list() -> pd.DataFrame:
         "投资经理",
     ]
     return manager_data_out
+
+
+# 中国证券投资基金业协会-信息公示-从业人员信息-债券投资交易相关人员公示
+def amac_person_bond_org_list() -> pd.DataFrame:
+    """
+    中国证券投资基金业协会-信息公示-从业人员信息-债券投资交易相关人员公示
+    https://human.amac.org.cn/web/org/personPublicity.html
+    :return: 债券投资交易相关人员公示
+    :rtype: pandas.DataFrame
+    """
+    url = 'https://human.amac.org.cn/web/api/publicityAddress'
+    params = {
+        'rand': '0.1965383823100506',
+        'pageNum': '0',
+        'pageSize': '5000'
+    }
+    r = requests.get(url, params=params)
+    data_json = r.json()
+    temp_df = pd.DataFrame(data_json['list'])
+    temp_df.reset_index(inplace=True)
+    temp_df['index'] = range(1, len(temp_df)+1)
+    temp_df.columns = [
+        "序号",
+        "_",
+        "_",
+        "机构名称",
+        "机构类型",
+        "公示网址",
+    ]
+    temp_df = temp_df[[
+        "序号",
+        "机构类型",
+        "机构名称",
+        "公示网址",
+    ]]
+    return temp_df
 
 
 # 中国证券投资基金业协会-信息公示-私募基金管理人公示
@@ -410,39 +446,49 @@ def amac_fund_account_info() -> pd.DataFrame:
 # 中国证券投资基金业协会-信息公示-基金产品公示-资产支持专项计划
 def amac_fund_abs() -> pd.DataFrame:
     """
-    中国证券投资基金业协会-信息公示-基金产品公示-资产支持专项计划
-    http://gs.amac.org.cn/amac-infodisc/res/fund/account/index.html
-    :return: 资产支持专项计划
+    中国证券投资基金业协会-信息公示-基金产品公示-资产支持专项计划公示信息
+    https://gs.amac.org.cn/amac-infodisc/res/fund/abs/index.html
+    :return: 资产支持专项计划公示信息
     :rtype: pandas.DataFrame
     """
     print("正在下载, 由于数据量比较大, 请等待大约 5 秒")
-    headers = {
-        "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8"
+    url = 'https://gs.amac.org.cn/amac-infodisc/api/fund/abs'
+    params = {
+        'rand': '0.45416112116335716',
+        'pageNo': '0',
+        'pageSize': '5000',
     }
-    data = requests.post(url=amac_fund_abs_url, data=amac_fund_abs_payload, headers=headers)
-    need_data = data.json()["result"]
-    keys_list = [
-        "ASPI_BA_NUMBER",
-        "ASPI_NAME",
-        "ASPI_GL_NAME",
-        "AII_TGR",
-        "AT_AUDIT_DATE",
-        "ASPI_SURE_FILE_NAME",
-        "ASPI_SURE_FILE_PATH",
-    ]  # 定义要取的 value 的 keys
-    manager_data_out = pd.DataFrame(need_data)
-    manager_data_out = manager_data_out[keys_list]
-    manager_data_out.columns = [
+    r = requests.post(url, params=params, json={}, verify=False)
+    data_json = r.json()
+    temp_df = pd.DataFrame(data_json["content"])
+    temp_df.reset_index(inplace=True)
+    temp_df['index'] = range(1, len(temp_df)+1)
+    temp_df.columns = [
+        "编号",
+        "_",
+        "_",
+        "专项计划全称",
+        "备案编号",
+        "管理人",
+        "托管人",
+        "备案通过时间",
+        "成立日期",
+        "预期到期时间",
+    ]
+    temp_df["备案通过时间"] = pd.to_datetime(temp_df["备案通过时间"], unit='ms').dt.date
+    temp_df["成立日期"] = pd.to_datetime(temp_df["成立日期"], unit='ms').dt.date
+    temp_df["预期到期时间"] = pd.to_datetime(temp_df["预期到期时间"], unit='ms').dt.date
+    temp_df = temp_df[[
+        "编号",
         "备案编号",
         "专项计划全称",
         "管理人",
         "托管人",
+        "成立日期",
+        "预期到期时间",
         "备案通过时间",
-        "备案函名称",
-        "备案函下载地址",
-    ]
-    manager_data_out["备案通过时间"] = pd.to_datetime(manager_data_out["备案通过时间"])
-    return manager_data_out
+    ]]
+    return temp_df
 
 
 # 中国证券投资基金业协会-信息公示-基金产品公示-期货公司集合资管产品公示
@@ -527,16 +573,23 @@ if __name__ == "__main__":
 
     # 中国证券投资基金业协会-信息公示-从业人员信息
     # 中国证券投资基金业协会-信息公示-从业人员信息-基金从业人员资格注册信息
-    amac_person_org_list_df = amac_person_org_list()
-    print(amac_person_org_list_df)
+    amac_person_fund_org_list_df = amac_person_fund_org_list()
+    print(amac_person_fund_org_list_df)
+
+    # 中国证券投资基金业协会-信息公示-从业人员信息
+    # 中国证券投资基金业协会-信息公示-从业人员信息-债券投资交易相关人员公示
+    amac_person_bond_org_list_df = amac_person_bond_org_list()
+    print(amac_person_bond_org_list_df)
 
     # 中国证券投资基金业协会-信息公示-私募基金管理人公示
     # 中国证券投资基金业协会-信息公示-私募基金管理人公示-私募基金管理人综合查询
     amac_manager_info_df = amac_manager_info()
     print(amac_manager_info_df)
+
     # 中国证券投资基金业协会-信息公示-私募基金管理人公示-私募基金管理人分类公示
     amac_manager_classify_info_df = amac_manager_classify_info()
     print(amac_manager_classify_info_df)
+
     # 中国证券投资基金业协会-信息公示-私募基金管理人公示-证券公司私募基金子公司管理人信息公示
     amac_member_sub_info_df = amac_member_sub_info()
     print(amac_member_sub_info_df)
@@ -547,21 +600,27 @@ if __name__ == "__main__":
     print(amac_fund_info_df)
     example_df = amac_fund_info_df[amac_fund_info_df["私募基金管理人名称"].str.contains("聚宽")]
     print(example_df)
+
     # 中国证券投资基金业协会-信息公示-基金产品-证券公司集合资管产品公示
     amac_securities_info_df = amac_securities_info()
     print(amac_securities_info_df)
+
     # 中国证券投资基金业协会-信息公示-基金产品-证券公司直投基金
     amac_aoin_info_df = amac_aoin_info()
     print(amac_aoin_info_df)
+
     # 中国证券投资基金业协会-信息公示-基金产品公示-证券公司私募投资基金
     amac_fund_sub_info_df = amac_fund_sub_info()
     print(amac_fund_sub_info_df)
+
     # 中国证券投资基金业协会-信息公示-基金产品公示-基金公司及子公司集合资管产品公示
     amac_fund_account_info_df = amac_fund_account_info()
     print(amac_fund_account_info_df)
+
     # 中国证券投资基金业协会-信息公示-基金产品公示-资产支持专项计划
     amac_fund_abs_df = amac_fund_abs()
     print(amac_fund_abs_df)
+
     # 中国证券投资基金业协会-信息公示-基金产品公示-期货公司集合资管产品公示
     amac_futures_info_df = amac_futures_info()
     print(amac_futures_info_df)

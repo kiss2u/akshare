@@ -1,12 +1,11 @@
 # -*- coding:utf-8 -*-
 # /usr/bin/env python
 """
-Date: 2021/2/8 16:08
+Date: 2021/7/14 16:08
 Desc: 金十数据-数据中心-中国-中国宏观
 https://datacenter.jin10.com/economic
 首页-价格指数-中价-价格指数-中国电煤价格指数(CTCI)
 http://jgjc.ndrc.gov.cn/dmzs.aspx?clmId=741
-输出数据格式为 float64
 """
 import json
 import math
@@ -33,6 +32,100 @@ from akshare.economic.cons import (
     JS_CHINA_CX_SERVICE_PMI_YEARLY_URL,
     JS_CHINA_MARKET_MARGIN_SH_URL,
 )
+
+
+# 企业商品价格指数
+def macro_china_qyspjg() -> pd.DataFrame:
+    """
+    企业商品价格指数
+    http://data.eastmoney.com/cjsj/qyspjg.html
+    :return: 企业商品价格指数
+    :rtype: pandas.DataFrame
+    """
+    url = 'http://datainterface.eastmoney.com/EM_DataCenter/JS.aspx'
+    params = {
+        'type': 'GJZB',
+        'sty': 'ZGZB',
+        'js': '({data:[(x)],pages:(pc)})',
+        'p': '1',
+        'ps': '2000',
+        'mkt': '9',
+        'pageNo': '1',
+        'pageNum': '1',
+        '_': '1625474966006'
+    }
+    r = requests.get(url, params=params)
+    data_text = r.text
+    data_json = demjson.decode(data_text[1:-1])
+    temp_df = pd.DataFrame([item.split(',') for item in data_json['data']])
+    temp_df.columns = [
+        '月份',
+        '总指数-指数值',
+        '总指数-同比增长',
+        '总指数-环比增长',
+        '农产品-指数值',
+        '农产品-同比增长',
+        '农产品-环比增长',
+        '矿产品-指数值',
+        '矿产品-同比增长',
+        '矿产品-环比增长',
+        '煤油电-指数值',
+        '煤油电-同比增长',
+        '煤油电-环比增长',
+    ]
+    temp_df['总指数-指数值'] = pd.to_numeric(temp_df['总指数-指数值'])
+    temp_df['总指数-同比增长'] = pd.to_numeric(temp_df['总指数-同比增长'])
+    temp_df['总指数-环比增长'] = pd.to_numeric(temp_df['总指数-环比增长'])
+    temp_df['农产品-指数值'] = pd.to_numeric(temp_df['农产品-指数值'])
+    temp_df['农产品-同比增长'] = pd.to_numeric(temp_df['农产品-同比增长'])
+    temp_df['农产品-环比增长'] = pd.to_numeric(temp_df['农产品-环比增长'])
+    temp_df['矿产品-指数值'] = pd.to_numeric(temp_df['矿产品-指数值'])
+    temp_df['矿产品-同比增长'] = pd.to_numeric(temp_df['矿产品-同比增长'])
+    temp_df['矿产品-环比增长'] = pd.to_numeric(temp_df['矿产品-环比增长'])
+    temp_df['煤油电-指数值'] = pd.to_numeric(temp_df['煤油电-指数值'])
+    temp_df['煤油电-同比增长'] = pd.to_numeric(temp_df['煤油电-同比增长'])
+    temp_df['煤油电-环比增长'] = pd.to_numeric(temp_df['煤油电-环比增长'])
+    return temp_df
+
+
+# 外商直接投资数据
+def macro_china_fdi() -> pd.DataFrame:
+    """
+    外商直接投资数据
+    http://data.eastmoney.com/cjsj/fdi.html
+    :return: 外商直接投资数据
+    :rtype: pandas.DataFrame
+    """
+    url = 'http://datainterface.eastmoney.com/EM_DataCenter/JS.aspx'
+    params = {
+        'type': 'GJZB',
+        'sty': 'ZGZB',
+        'js': '({data:[(x)],pages:(pc)})',
+        'p': '1',
+        'ps': '2000',
+        'mkt': '15',
+        'pageNo': '1',
+        'pageNum': '1',
+        '_': '1625474966006'
+    }
+    r = requests.get(url, params=params)
+    data_text = r.text
+    data_json = demjson.decode(data_text[1:-1])
+    temp_df = pd.DataFrame([item.split(',') for item in data_json['data']])
+    temp_df.columns = [
+        '月份',
+        '当月',
+        '当月-同比增长',
+        '当月-环比增长',
+        '累计',
+        '累计-同比增长',
+    ]
+    temp_df['当月'] = pd.to_numeric(temp_df['当月'])
+    temp_df['当月-同比增长'] = pd.to_numeric(temp_df['当月-同比增长'])
+    temp_df['当月-环比增长'] = pd.to_numeric(temp_df['当月-环比增长'])
+    temp_df['累计'] = pd.to_numeric(temp_df['累计'])
+    temp_df['累计-同比增长'] = pd.to_numeric(temp_df['累计-同比增长'])
+    return temp_df
 
 
 # 中国社会融资规模数据
@@ -1070,17 +1163,13 @@ def macro_china_enterprise_boom_index():
 # 中国-全国税收收入
 def macro_china_national_tax_receipts() -> pd.DataFrame:
     """
-    http://data.eastmoney.com/cjsj/nationaltaxreceipts.aspx
     中国-全国税收收入
+    http://data.eastmoney.com/cjsj/qgsssr.html
     :return: 全国税收收入
     :rtype: pandas.DataFrame
     """
     url = "http://datainterface.eastmoney.com/EM_DataCenter/JS.aspx"
-    headers = {
-        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.138 Safari/537.36",
-    }
     params = {
-        "cb": "datatable8330863",
         "type": "GJZB",
         "sty": "ZGZB",
         "js": "({data:[(x)],pages:(pc)})",
@@ -1091,11 +1180,14 @@ def macro_china_national_tax_receipts() -> pd.DataFrame:
         "pageNum": "1",
         "_": "1603023435552",
     }
-    r = requests.get(url, params=params, headers=headers)
+    r = requests.get(url, params=params)
     data_text = r.text
     data_json = demjson.decode(data_text[data_text.find("{") : -1])
     temp_df = pd.DataFrame([item.split(",") for item in data_json["data"]])
     temp_df.columns = ["季度", "税收收入合计", "较上年同期", "季度环比"]
+    temp_df['税收收入合计'] = pd.to_numeric(temp_df['税收收入合计'])
+    temp_df['较上年同期'] = pd.to_numeric(temp_df['较上年同期'])
+    temp_df['季度环比'] = pd.to_numeric(temp_df['季度环比'])
     return temp_df
 
 
@@ -1180,9 +1272,6 @@ def macro_china_stock_market_cap():
     :rtype: pandas.DataFrame
     """
     url = "http://datainterface.eastmoney.com/EM_DataCenter/JS.aspx"
-    headers = {
-        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.138 Safari/537.36",
-    }
     params = {
         "cb": "",
         "type": "GJZB",
@@ -1193,7 +1282,7 @@ def macro_china_stock_market_cap():
         "mkt": "2",
         "_": "1608999482942",
     }
-    r = requests.get(url, params=params, headers=headers)
+    r = requests.get(url, params=params)
     data_text = r.text
     data_json = demjson.decode(data_text[data_text.find("{") : -1])
     temp_df = pd.DataFrame([item.split(",") for item in data_json["data"]])
@@ -1212,7 +1301,18 @@ def macro_china_stock_market_cap():
         "A股最低综合股价指数-上海",
         "A股最低综合股价指数-深圳",
     ]
-    
+    temp_df['发行总股本-上海'] = pd.to_numeric(temp_df['发行总股本-上海'])
+    temp_df['发行总股本-深圳'] = pd.to_numeric(temp_df['发行总股本-深圳'])
+    temp_df['市价总值-上海'] = pd.to_numeric(temp_df['市价总值-上海'])
+    temp_df['市价总值-深圳'] = pd.to_numeric(temp_df['市价总值-深圳'])
+    temp_df['成交金额-上海'] = pd.to_numeric(temp_df['成交金额-上海'])
+    temp_df['成交金额-深圳'] = pd.to_numeric(temp_df['成交金额-深圳'])
+    temp_df['成交量-上海'] = pd.to_numeric(temp_df['成交量-上海'])
+    temp_df['成交量-深圳'] = pd.to_numeric(temp_df['成交量-深圳'])
+    temp_df['A股最高综合股价指数-上海'] = pd.to_numeric(temp_df['A股最高综合股价指数-上海'])
+    temp_df['A股最高综合股价指数-深圳'] = pd.to_numeric(temp_df['A股最高综合股价指数-深圳'])
+    temp_df['A股最低综合股价指数-上海'] = pd.to_numeric(temp_df['A股最低综合股价指数-上海'])
+    temp_df['A股最低综合股价指数-深圳'] = pd.to_numeric(temp_df['A股最低综合股价指数-深圳'])
     return temp_df
 
 
@@ -1245,6 +1345,15 @@ def macro_china_money_supply():
         "流通中的现金(M0)环比增长",
     ]
     data_df = pd.DataFrame(res_list, columns=columns)
+    data_df['货币和准货币(M2)数量(亿元)'] = pd.to_numeric(data_df['货币和准货币(M2)数量(亿元)'])
+    data_df['货币和准货币(M2)同比增长'] = pd.to_numeric(data_df['货币和准货币(M2)同比增长'])
+    data_df['货币和准货币(M2)环比增长'] = pd.to_numeric(data_df['货币和准货币(M2)环比增长'])
+    data_df['货币(M1)数量(亿元)'] = pd.to_numeric(data_df['货币(M1)数量(亿元)'])
+    data_df['货币(M1)同比增长'] = pd.to_numeric(data_df['货币(M1)同比增长'])
+    data_df['货币(M1)环比增长'] = pd.to_numeric(data_df['货币(M1)环比增长'])
+    data_df['流通中的现金(M0)数量(亿元)'] = pd.to_numeric(data_df['流通中的现金(M0)数量(亿元)'])
+    data_df['流通中的现金(M0)同比增长'] = pd.to_numeric(data_df['流通中的现金(M0)同比增长'])
+    data_df['流通中的现金(M0)环比增长'] = pd.to_numeric(data_df['流通中的现金(M0)环比增长'])
     return data_df
 
 
@@ -1256,11 +1365,7 @@ def macro_china_cpi():
     :rtype: pandas.DataFrame
     """
     url = "http://datainterface.eastmoney.com/EM_DataCenter/JS.aspx"
-    headers = {
-        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.138 Safari/537.36",
-    }
     params = {
-        "cb": "datatable5463613",
         "type": "GJZB",
         "sty": "ZGZB",
         "js": "({data:[(x)],pages:(pc)})",
@@ -1271,7 +1376,7 @@ def macro_china_cpi():
         "pageNum": "1",
         "_": "1603023435552",
     }
-    r = requests.get(url, params=params, headers=headers)
+    r = requests.get(url, params=params)
     data_text = r.text
     data_json = demjson.decode(data_text[data_text.find("{") : -1])
     temp_df = pd.DataFrame([item.split(",") for item in data_json["data"]])
@@ -1290,6 +1395,18 @@ def macro_china_cpi():
         "农村-环比增长",
         "农村-累计",
     ]
+    temp_df['全国-当月'] = pd.to_numeric(temp_df['全国-当月'])
+    temp_df['全国-同比增长'] = pd.to_numeric(temp_df['全国-同比增长'])
+    temp_df['全国-环比增长'] = pd.to_numeric(temp_df['全国-环比增长'])
+    temp_df['全国-累计'] = pd.to_numeric(temp_df['全国-累计'])
+    temp_df['城市-当月'] = pd.to_numeric(temp_df['城市-当月'])
+    temp_df['城市-同比增长'] = pd.to_numeric(temp_df['城市-同比增长'])
+    temp_df['城市-环比增长'] = pd.to_numeric(temp_df['城市-环比增长'])
+    temp_df['城市-累计'] = pd.to_numeric(temp_df['城市-累计'])
+    temp_df['农村-当月'] = pd.to_numeric(temp_df['农村-当月'])
+    temp_df['农村-同比增长'] = pd.to_numeric(temp_df['农村-同比增长'])
+    temp_df['农村-环比增长'] = pd.to_numeric(temp_df['农村-环比增长'])
+    temp_df['农村-累计'] = pd.to_numeric(temp_df['农村-累计'])
     return temp_df
 
 
@@ -1301,11 +1418,7 @@ def macro_china_gdp():
     :rtype: pandas.DataFrame
     """
     url = "http://datainterface.eastmoney.com/EM_DataCenter/JS.aspx"
-    headers = {
-        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.138 Safari/537.36",
-    }
     params = {
-        "cb": "datatable8298916",
         "type": "GJZB",
         "sty": "ZGZB",
         "js": "({data:[(x)],pages:(pc)})",
@@ -1316,7 +1429,7 @@ def macro_china_gdp():
         "pageNum": "1",
         "_": "1603023435552",
     }
-    r = requests.get(url, params=params, headers=headers)
+    r = requests.get(url, params=params)
     data_text = r.text
     data_json = demjson.decode(data_text[data_text.find("{") : -1])
     temp_df = pd.DataFrame([item.split(",") for item in data_json["data"]])
@@ -1331,6 +1444,14 @@ def macro_china_gdp():
         "第三产业-绝对值",
         "第三产业-同比增长",
     ]
+    temp_df['国内生产总值-绝对值'] = pd.to_numeric(temp_df['国内生产总值-绝对值'])
+    temp_df['国内生产总值-同比增长'] = pd.to_numeric(temp_df['国内生产总值-同比增长'])
+    temp_df['第一产业-绝对值'] = pd.to_numeric(temp_df['第一产业-绝对值'])
+    temp_df['第一产业-同比增长'] = pd.to_numeric(temp_df['第一产业-同比增长'])
+    temp_df['第二产业-绝对值'] = pd.to_numeric(temp_df['第二产业-绝对值'])
+    temp_df['第二产业-同比增长'] = pd.to_numeric(temp_df['第二产业-同比增长'])
+    temp_df['第三产业-绝对值'] = pd.to_numeric(temp_df['第三产业-绝对值'])
+    temp_df['第三产业-同比增长'] = pd.to_numeric(temp_df['第三产业-同比增长'])
     return temp_df
 
 
@@ -1373,11 +1494,7 @@ def macro_china_pmi():
     :rtype: pandas.DataFrame
     """
     url = "http://datainterface.eastmoney.com/EM_DataCenter/JS.aspx"
-    headers = {
-        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.138 Safari/537.36",
-    }
     params = {
-        "cb": "datatable8320415",
         "type": "GJZB",
         "sty": "ZGZB",
         "js": "({data:[(x)],pages:(pc)})",
@@ -1388,7 +1505,7 @@ def macro_china_pmi():
         "pageNum": "1",
         "_": "1603023435552",
     }
-    r = requests.get(url, params=params, headers=headers)
+    r = requests.get(url, params=params)
     data_text = r.text
     data_json = demjson.decode(data_text[data_text.find("{") : -1])
     temp_df = pd.DataFrame([item.split(",") for item in data_json["data"]])
@@ -1399,6 +1516,10 @@ def macro_china_pmi():
         "非制造业-指数",
         "非制造业-同比增长",
     ]
+    temp_df['制造业-指数'] = pd.to_numeric(temp_df['制造业-指数'])
+    temp_df['制造业-同比增长'] = pd.to_numeric(temp_df['制造业-同比增长'])
+    temp_df['非制造业-指数'] = pd.to_numeric(temp_df['非制造业-指数'])
+    temp_df['非制造业-同比增长'] = pd.to_numeric(temp_df['非制造业-同比增长'])
     return temp_df
 
 
@@ -1447,11 +1568,7 @@ def macro_china_hgjck():
     :rtype: pandas.DataFrame
     """
     url = "http://datainterface.eastmoney.com/EM_DataCenter/JS.aspx"
-    headers = {
-        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.138 Safari/537.36",
-    }
     params = {
-        "cb": "datatable938186",
         "type": "GJZB",
         "sty": "ZGZB",
         "js": "({data:[(x)],pages:(pc)})",
@@ -1462,7 +1579,7 @@ def macro_china_hgjck():
         "pageNum": "1",
         "_": "1603023435552",
     }
-    r = requests.get(url, params=params, headers=headers)
+    r = requests.get(url, params=params)
     data_text = r.text
     data_json = demjson.decode(data_text[data_text.find("{") : -1])
     temp_df = pd.DataFrame([item.split(",") for item in data_json["data"]])
@@ -1479,6 +1596,16 @@ def macro_china_hgjck():
         "累计进口额-金额",
         "累计进口额-同比增长",
     ]
+    temp_df['当月出口额-金额'] = pd.to_numeric(temp_df['当月出口额-金额'])
+    temp_df['当月出口额-同比增长'] = pd.to_numeric(temp_df['当月出口额-同比增长'])
+    temp_df['当月出口额-环比增长'] = pd.to_numeric(temp_df['当月出口额-环比增长'])
+    temp_df['当月进口额-金额'] = pd.to_numeric(temp_df['当月进口额-金额'])
+    temp_df['当月进口额-同比增长'] = pd.to_numeric(temp_df['当月进口额-同比增长'])
+    temp_df['当月进口额-环比增长'] = pd.to_numeric(temp_df['当月进口额-环比增长'])
+    temp_df['累计出口额-金额'] = pd.to_numeric(temp_df['累计出口额-金额'])
+    temp_df['累计出口额-同比增长'] = pd.to_numeric(temp_df['累计出口额-同比增长'])
+    temp_df['累计进口额-金额'] = pd.to_numeric(temp_df['累计进口额-金额'])
+    temp_df['累计进口额-同比增长'] = pd.to_numeric(temp_df['累计进口额-同比增长'])
     return temp_df
 
 
@@ -1717,32 +1844,76 @@ def macro_china_xfzxx():
     :return: 消费者信心指数
     :rtype: pandas.DataFrame
     """
-    url = "https://data.eastmoney.com/DataCenter_V3/Chart/cjsj/China.ashx"
+    url = "http://datainterface.eastmoney.com/EM_DataCenter/JS.aspx"
     params = {
-        "isxml": "false",
-        "type": "GJZB",
-        "style": "ZGZB",
-        "mkt": "4",
-        "r": "0.43184440663583823",
+        'type': 'GJZB',
+        'sty': 'ZGZB',
+        'js': '({data:[(x)],pages:(pc)})',
+        'p': '1',
+        'ps': '2000',
+        'mkt': '4',
+        'pageNo': '1',
+        'pageNum': '1',
+        '_': '1625824314514',
     }
     r = requests.get(url, params=params)
-    data_json = r.json()
-    temp_df = pd.DataFrame(
-        [
-            ["20" + item for item in data_json["X"].split(",")],
-            [item for item in data_json["Y"][0].split(",")],
-            [item for item in data_json["Y"][1].split(",")],
-            [item for item in data_json["Y"][2].split(",")],
-        ]
-    ).T
-    temp_df.columns = ["月份", "消费者信心指数", "消费者满意指数", "消费者预期指数"]
-    temp_df = temp_df.astype(
-        {
-            "消费者信心指数": float,
-            "消费者满意指数": float,
-            "消费者预期指数": float,
-        }
-    )
+    data_text = r.text
+    data_json = demjson.decode(data_text[1:-1])
+    temp_df = pd.DataFrame([item.split(',') for item in data_json['data']])
+    temp_df.columns = [
+        '月份',
+        '消费者信心指数-指数值',
+        '消费者信心指数-同比增长',
+        '消费者信心指数-环比增长',
+        '消费者满意指数-指数值',
+        '消费者满意指数-同比增长',
+        '消费者满意指数-环比增长',
+        '消费者预期指数-指数值',
+        '消费者预期指数-同比增长',
+        '消费者预期指数-环比增长',
+    ]
+    temp_df['消费者信心指数-指数值'] = pd.to_numeric(temp_df['消费者信心指数-指数值'])
+    temp_df['消费者信心指数-同比增长'] = pd.to_numeric(temp_df['消费者信心指数-同比增长'])
+    temp_df['消费者信心指数-环比增长'] = pd.to_numeric(temp_df['消费者信心指数-环比增长'])
+    temp_df['消费者满意指数-指数值'] = pd.to_numeric(temp_df['消费者满意指数-指数值'])
+    temp_df['消费者满意指数-同比增长'] = pd.to_numeric(temp_df['消费者满意指数-同比增长'])
+    temp_df['消费者满意指数-环比增长'] = pd.to_numeric(temp_df['消费者满意指数-环比增长'])
+    temp_df['消费者预期指数-指数值'] = pd.to_numeric(temp_df['消费者满意指数-指数值'])
+    temp_df['消费者预期指数-同比增长'] = pd.to_numeric(temp_df['消费者预期指数-同比增长'])
+    temp_df['消费者预期指数-环比增长'] = pd.to_numeric(temp_df['消费者预期指数-环比增长'])
+    return temp_df
+
+
+def macro_china_gyzjz():
+    """
+    工业增加值增长
+    https://data.eastmoney.com/cjsj/gyzjz.html
+    :return: 工业增加值增长
+    :rtype: pandas.DataFrame
+    """
+    url = "https://datainterface.eastmoney.com/EM_DataCenter/JS.aspx"
+    params = {
+        'type': 'GJZB',
+        'sty': 'ZGZB',
+        'js': '({data:[(x)],pages:(pc)})',
+        'p': '1',
+        'ps': '2000',
+        'mkt': '0',
+        'pageNo': '1',
+        'pageNum': '1',
+        '_': '1625824314514',
+    }
+    r = requests.get(url, params=params)
+    data_text = r.text
+    data_json = demjson.decode(data_text[1:-1])
+    temp_df = pd.DataFrame([item.split(',') for item in data_json['data']])
+    temp_df.columns = [
+        '月份',
+        '同比增长',
+        '累计增长',
+    ]
+    temp_df['同比增长'] = pd.to_numeric(temp_df['同比增长'])
+    temp_df['累计增长'] = pd.to_numeric(temp_df['累计增长'])
     return temp_df
 
 
@@ -1784,28 +1955,35 @@ def macro_china_consumer_goods_retail():
     :return: 社会消费品零售总额
     :rtype: pandas.DataFrame
     """
-    url = "http://data.eastmoney.com/DataCenter_V3/Chart/cjsj/China.ashx"
+    url = "http://datainterface.eastmoney.com/EM_DataCenter/JS.aspx"
     params = {
-        "isxml": "false",
-        "type": "GJZB",
-        "style": "ZGZB",
-        "mkt": "5",
-        "r": "0.4519648595352628",
+        'type': 'GJZB',
+        'sty': 'ZGZB',
+        'js': '({data:[(x)],pages:(pc)})',
+        'p': '1',
+        'ps': '2000',
+        'mkt': '5',
+        'pageNo': '1',
+        'pageNum': '1',
+        '_': '1625822628225',
     }
     r = requests.get(url, params=params)
-    data_json = r.json()
-    temp_df = pd.DataFrame(
-        [
-            ["20" + item for item in data_json["X"].split(",")],
-            [item for item in data_json["Y"][0].split(",")],
-        ]
-    ).T
-    temp_df.columns = ["月份", "当月"]
-    temp_df = temp_df.astype(
-        {
-            "当月": float,
-        }
-    )
+    data_text = r.text
+    data_json = demjson.decode(data_text[1:-1])
+    temp_df = pd.DataFrame([item.split(',') for item in data_json['data']])
+    temp_df.columns = [
+        '月份',
+        '当月',
+        '同比增长',
+        '环比增长',
+        '累计',
+        '累计-同比增长',
+    ]
+    temp_df['当月'] = pd.to_numeric(temp_df['当月'])
+    temp_df['同比增长'] = pd.to_numeric(temp_df['同比增长'])
+    temp_df['环比增长'] = pd.to_numeric(temp_df['环比增长'])
+    temp_df['累计'] = pd.to_numeric(temp_df['累计'])
+    temp_df['累计-同比增长'] = pd.to_numeric(temp_df['累计-同比增长'])
     return temp_df
 
 
@@ -2306,6 +2484,12 @@ def macro_china_real_estate():
 
 
 if __name__ == "__main__":
+    # 企业商品价格指数
+    macro_china_qyspjg_df = macro_china_qyspjg()
+    print(macro_china_qyspjg_df)
+    # 外商直接投资数据
+    macro_china_fdi_df = macro_china_fdi()
+    print(macro_china_fdi_df)
     # 社会融资规模增量
     macro_china_shrzgm_df = macro_china_shrzgm()
     print(macro_china_shrzgm_df)
@@ -2447,6 +2631,9 @@ if __name__ == "__main__":
 
     macro_china_xfzxx_df = macro_china_xfzxx()
     print(macro_china_xfzxx_df)
+
+    macro_china_gyzjz_df = macro_china_gyzjz
+    print(macro_china_gyzjz_df)
 
     macro_china_reserve_requirement_ratio_df = macro_china_reserve_requirement_ratio()
     print(macro_china_reserve_requirement_ratio_df)

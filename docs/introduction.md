@@ -3,22 +3,11 @@
 **风险提示：[AKShare](https://github.com/jindaxiang/akshare) 开源财经数据接口库所采集的数据皆来自公开的数据源，不涉及任何个人隐私数据和非公开数据。
 同时本项目提供的数据接口及相关数据仅用于学术研究，任何个人、机构及团体使用本项目的数据接口及相关数据请注意商业风险。**
 
-1. 本文档更新于 **2021-04-22**;
-
-2. 如有库、文档及数据的相关问题, 请在 [AKShare Issues](https://github.com/jindaxiang/akshare/issues) 中提 Issues;
-
-3. 您也可以加入QQ群: 328736477
-
-<div align=center>
-    <a target="_blank" href="https://qm.qq.com/cgi-bin/qm/qr?k=Hf_P_qZN_iEn8V9rj67ufEWpMOpB6v7t&jump_from=webapi">
-        <img border="0" src="https://jfds-1252952517.cos.ap-chengdu.myqcloud.com/akshare/readme/qrcode/qr_code_328736477.png" alt="AKShare-官方" title="AKShare-官方" align="center">
-    </a>
-</div>
-4. 欢迎关注 数据科学实战 微信公众号:
-
-<div align=center>
-    <img src="https://jfds-1252952517.cos.ap-chengdu.myqcloud.com/akshare/readme/qrcode/ds.png">
-</div>
+1. 本文档更新于 **2021-07-15**;
+2. 想了解更多金融量化、数据科学相关的内容，欢迎加入 **知识星球【数据科学家】** 高质量社区，里面有丰富的视频、问答、文章、书籍及代码等内容: ![](https://jfds-1252952517.cos.ap-chengdu.myqcloud.com/akshare/readme/qrcode/data_scientist.png)
+3. 如有库、文档及数据的相关问题, 请在 [AKShare Issues](https://github.com/jindaxiang/akshare/issues) 中提 Issues;
+4. 您也可以加入 **QQ** 群: 922305679, <div align=center><a target="_blank" href="https://qm.qq.com/cgi-bin/qm/qr?k=WQIFmUrIUy1LU444r1NToHMlmzWwirSQ&jump_from=webapi"><img border="0" src="https://jfds-1252952517.cos.ap-chengdu.myqcloud.com/akshare/readme/qrcode/qr_code_922305679.png" alt="AKShare-官方" title="AKShare-官方" align="center"></a></div>
+5. 欢迎关注 **数据科学实战** 微信公众号: <div align=center><img src="https://jfds-1252952517.cos.ap-chengdu.myqcloud.com/akshare/readme/qrcode/ds.png"></div>
 
 ## 引用
 
@@ -70,9 +59,9 @@
     
     6.7 增加[中国外汇交易中心暨全国银行间同业拆借中心网站](http://www.chinamoney.com.cn/chinese/)提供的中国银行间债券行情和外汇数据;
 
-    6.8 增加[英为财情网站-商品](https://cn.investing.com/commodities/)提供的全球商品历史数据;
+    6.8 增加[英为财情网站-商品](https://cn.investing.com/commodities)提供的全球商品历史数据;
     
-    6.9 增加[金十数据网站](https://www.jin10.com/)提供的全球宏观经济数据接口-中国宏观;
+    6.9 增加[金十数据网站](https://www.jin10.com)提供的全球宏观经济数据接口-中国宏观;
     
     6.10 增加[金十数据网站](https://www.jin10.com/)提供的全球宏观经济数据接口-美国宏观;
     
@@ -210,7 +199,7 @@
 
 7. 提供完善的接口文档, 提高 [AKShare](https://github.com/jindaxiang/akshare) 的易用性.
 
-![思维导图](https://jfds-1252952517.cos.ap-chengdu.myqcloud.com/akshare/readme/mindmap/AKShare.svg)
+![](https://jfds-1252952517.cos.ap-chengdu.myqcloud.com/akshare/readme/mindmap/AKShare.svg)
 
 ## [AKShare](https://github.com/jindaxiang/akshare) 的初衷
 

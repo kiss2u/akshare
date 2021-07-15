@@ -70,8 +70,8 @@ Code
 
 ```python
 import akshare as ak
-hist_df = ak.stock_us_daily(symbol="AMZN")  # Get U.S. stock Amazon's price info
-print(hist_df)
+stock_us_daily_df = ak.stock_us_daily(symbol="AMZN")  # Get U.S. stock Amazon's price info
+print(stock_us_daily_df)
 ```
 
 Output
@@ -115,16 +115,21 @@ Output
 
 ## Communication
 
+Pay attention to **数据科学家** Official Accounts to get more information about Quant, ML, DS and so on.
+
+<div align=center>
+    <img src="https://jfds-1252952517.cos.ap-chengdu.myqcloud.com/akshare/readme/qrcode/data_scientist.png">
+</div>
+
 Pay attention to **数据科学实战** WeChat Official Accounts to get the [AKShare](https://github.com/jindaxiang/akshare) updated info:
 
 <div align=center>
     <img src="https://github.com/jindaxiang/akshare/blob/master/example/images/ds.png">
 </div>
 
-Application to add **AKShare-官方** QQ group and talk about [AKShare](https://github.com/jindaxiang/akshare) issues, QQ group number: 328736477
-
+Application to add **AKShare-官方** QQ group and talk about [AKShare](https://github.com/jindaxiang/akshare) issues, QQ group number: 922305679
 <div align=center>
-    <a target="_blank" href="https://qm.qq.com/cgi-bin/qm/qr?k=Hf_P_qZN_iEn8V9rj67ufEWpMOpB6v7t&jump_from=webapi"><img border="0" src="https://jfds-1252952517.cos.ap-chengdu.myqcloud.com/akshare/readme/qrcode/qr_code_328736477.png" alt="AKShare-官方" title="AKShare-官方"></a>
+    <a target="_blank" href="https://qm.qq.com/cgi-bin/qm/qr?k=WQIFmUrIUy1LU444r1NToHMlmzWwirSQ&jump_from=webapi"><img border="0" src="https://jfds-1252952517.cos.ap-chengdu.myqcloud.com/akshare/readme/qrcode/qr_code_922305679.png" alt="AKShare-官方" title="AKShare-官方"></a>
 </div>
 
 ## Features
@@ -155,16 +160,11 @@ Application to add **AKShare-官方** QQ group and talk about [AKShare](https://
 ## Statement
 
 1. All data provided by [AKShare](https://github.com/jindaxiang/akshare) is just for academic research purpose;
-
 2. The data provided by [AKShare](https://github.com/jindaxiang/akshare) is for reference only and does not constitute any investment proposal;
-
 3. Any investor based on [AKShare](https://github.com/jindaxiang/akshare) research should pay more attention to data risk;
-
 4. [AKShare](https://github.com/jindaxiang/akshare) will insist on providing open-source financial data;
-
 5. Based on some uncontrollable factors, some data interfaces in [AKShare](https://github.com/jindaxiang/akshare) may be removed;
-
-6. Please follow the relevant open-source protocol used by [AKShare](https://github.com/jindaxiang/akshare)
+6. Please follow the relevant open-source protocol used by [AKShare](https://github.com/jindaxiang/akshare).
 
 ## Show your style
 

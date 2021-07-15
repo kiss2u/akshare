@@ -4,7 +4,7 @@
 
 具体函数使用详情, 请查看 [AKShare 文档](https://akshare.readthedocs.io/) 每个接口的示例代码
 
-[AKShare](https://github.com/jindaxiang/akshare) 数据接口一览表
+[AKShare](https://github.com/jindaxiang/akshare) 数据接口一览
 
 ```
  # 交易所期货数据
@@ -58,24 +58,24 @@
  "get_fx_spot_quote"  # 人民币外汇即期报价数据
  "get_fx_swap_quote"  # 人民币外汇远掉报价数据
  "get_fx_pair_quote"  # 外币对即期报价数据
- # 商品
- "get_sector_futures"  # 全球商品数据数据
+ # 全球大宗商品
+ "futures_global_commodity_hist"  # 全球大宗商品数据
  # 宏观-欧洲
- "get_euro_interest_rate"  # 欧洲央行决议报告
+ "macro_euro_interest_rate"  # 欧洲央行决议报告
  # 宏观-主要机构
- "get_cons_gold_amount"  # 全球最大黄金ETF—SPDR Gold Trust持仓报告-总价值
- "get_cons_gold_change"  # 全球最大黄金ETF—SPDR Gold Trust持仓报告-增持/减持
- "get_cons_gold_volume"  # 全球最大黄金ETF—SPDR Gold Trust持仓报告-总库存
- "get_cons_opec_month"  # 欧佩克报告-差异
- "get_cons_opec_near_change"  # 欧佩克报告-月份
- "get_cons_silver_amount"  # 全球最大白银ETF--iShares Silver Trust持仓报告-总价值
- "get_cons_silver_change"  # 全球最大白银ETF--iShares Silver Trust持仓报告-增持/减持
- "get_cons_silver_volume"  # 全球最大白银ETF--iShares Silver Trust持仓报告-总库存
+ "macro_cons_gold_amount"  # 全球最大黄金ETF—SPDR Gold Trust持仓报告-总价值
+ "macro_cons_gold_change"  # 全球最大黄金ETF—SPDR Gold Trust持仓报告-增持/减持
+ "macro_cons_gold_volume"  # 全球最大黄金ETF—SPDR Gold Trust持仓报告-总库存
+ "macro_cons_opec_month"  # 欧佩克报告-差异
+ "macro_cons_opec_near_change"  # 欧佩克报告-月份
+ "macro_cons_silver_amount"  # 全球最大白银ETF--iShares Silver Trust持仓报告-总价值
+ "macro_cons_silver_change"  # 全球最大白银ETF--iShares Silver Trust持仓报告-增持/减持
+ "macro_cons_silver_volume"  # 全球最大白银ETF--iShares Silver Trust持仓报告-总库存
  # 期货-仓单有效期
  "get_receipt_date"  # 期货仓单有效期数据
  # 新浪财经-期货
  "futures_zh_spot"  # 获取新浪-国内期货实时行情数据
- "futures_hq_spot"  # 获取新浪-外盘期货实时行情数据
+ "futures_foreign_commodity_realtime"  # 获取新浪-外盘期货实时行情数据
  "futures_foreign_hist"  # 获取新浪-外盘期货历史行情数据
  "futures_foreign_detail"  # 获取新浪-外盘期货合约详情
  "futures_zh_minute_sina"  # 获取新浪-内盘分时数据
@@ -163,7 +163,8 @@
  "fortune_rank"  # 获取财富世界500强公司历年排名
  # 中国证券投资基金业协会-信息公示
  "amac_member_info" # 中国证券投资基金业协会-信息公示-会员信息-会员机构综合查询
- "amac_person_org_list" # 中国证券投资基金业协会-信息公示-从业人员信息-基金从业人员资格注册信息
+ "amac_person_fund_org_list" # 中国证券投资基金业协会-信息公示-从业人员信息-基金从业人员资格注册信息
+ "amac_person_bond_org_list" # 中国证券投资基金业协会-信息公示-从业人员信息-债券投资交易相关人员公示
  "amac_manager_info" # 中国证券投资基金业协会-信息公示-私募基金管理人公示-私募基金管理人综合查询
  "amac_manager_classify_info" # 中国证券投资基金业协会-信息公示-私募基金管理人公示-私募基金管理人分类公示
  "amac_member_sub_info" # 中国证券投资基金业协会-信息公示-私募基金管理人公示-证券公司私募基金子公司管理人信息公示
@@ -394,7 +395,6 @@
  # 百度迁徙地图接口
  "migration_area_baidu"  # 百度迁徙地图-迁入/出地详情
  "migration_scale_baidu"  # 百度迁徙地图-迁徙规模
- "internal_flow_history"  # 百度迁徙地图-城内出行强度
  # 新型肺炎-小区查询
  "covid_19_area_search"  # 具体小区查询
  "covid_19_area_all"  # 提供可查询的省份-城市-区一览表
@@ -591,6 +591,8 @@
  "futures_comex_inventory"  # COMEX库存数据
  # 消费者信心指数
  "macro_china_xfzxx"  # 消费者信心指数
+ # 工业增加值增长
+ "macro_china_gyzjz"  # 工业增加值增长
  # 存款准备金率
  "macro_china_reserve_requirement_ratio"  # 存款准备金率
  # 社会消费品零售总额
@@ -715,7 +717,7 @@
  "stock_em_yjkb"  # 业绩快报
  # 概念板块
  "stock_board_concept_cons_ths"  # 同花顺-成份股
- "stock_board_concept_index_ths"  # 同花顺-指数日频数据
+ "stock_board_concept_hist_ths"  # 同花顺-指数日频数据
  # 业绩报告
  "stock_em_yjbb"  # 业绩报告
  # 三大表报
@@ -733,6 +735,91 @@
  "stock_lh_yyb_control"  # 营业部排名-抱团操作实力
  # 比特比持仓
  "crypto_bitcoin_hold_report"  # 比特比持仓
+ # 同花顺-数据中心-资金流向
+ "stock_fund_flow_individual"  # 同花顺-数据中心-资金流向-个股资金流
+ "stock_fund_flow_industry"  # 同花顺-数据中心-资金流向-行业资金流
+ "stock_fund_flow_concept"  # 同花顺-数据中心-资金流向-概念资金流
+ "stock_fund_flow_big_deal"  # 同花顺-数据中心-资金流向-大单追踪
+ # 高管持股
+ "stock_em_ggcg"  # 高管持股
+ # 新发基金
+ "fund_em_new_found"  # 新发基金
+ # 柯桥指数
+ "index_kq_fz"  # 柯桥纺织指数
+ "index_kq_fashion"  # 柯桥时尚指数
+ # 问财-热门股票
+ "stock_wc_hot_rank"  # 问财-热门股票
+ # Drewry 集装箱指数
+ "drewry_wci_index"  # Drewry 集装箱指数
+ # 浙江省排污权交易指数
+ "index_eri"  # 浙江省排污权交易指数
+ # 赚钱效应分析
+ "stock_legu_market_activity"  # 赚钱效应分析
+ # 中国公路物流运价指数
+ "index_cflp_price"  # 中国公路物流运价指数
+ # 中国公路物流运量指数
+ "index_cflp_volume"  # 中国公路物流运量指数
+ # 汽车销量
+ "car_gasgoo_sale_rank"  # 盖世汽车-汽车行业制造企业数据库-销量数据
+ "car_cpca_energy_sale"  # 乘联会-新能源细分市场-整体市场
+ # 平均持仓
+ "stock_legu_average_position"  # 平均持仓
+ # 增发
+ "stock_em_qbzf"  # 增发
+ # 配股
+ "stock_em_pg"  # 配股
+ # 中国-香港-宏观经济指标
+ "marco_china_hk_cpi"  # 中国-香港-消费者物价指数
+ "marco_china_hk_cpi_ratio"  # 中国-香港-消费者物价指数年率
+ "marco_china_hk_rate_of_unemployment"  # 中国-香港-失业率
+ "marco_china_hk_gbp"  # 中国-香港-香港 GDP
+ "marco_china_hk_gbp_ratio"  # 中国-香港-香港 GDP 同比
+ "marco_china_hk_building_volume"  # 中国-香港-香港楼宇买卖合约数量
+ "marco_china_hk_building_amount"  # 中国-香港-香港楼宇买卖合约成交金额
+ "marco_china_hk_trade_diff_ratio"  # 中国-香港-香港商品贸易差额年率
+ "marco_china_hk_ppi"  # 中国-香港-香港制造业 PPI 年率
+ # 涨停板行情
+ "stock_em_zt_pool"  # 涨停板行情-涨停股池
+ "stock_em_zt_pool_previous"  # 涨停板行情-昨日涨停股池
+ "stock_em_zt_pool_strong"  # 涨停板行情-强势股池
+ "stock_em_zt_pool_sub_new"  # 涨停板行情-次新股池
+ "stock_em_zt_pool_zbgc"  # 涨停板行情-炸板股池
+ "stock_em_zt_pool_dtgc"  # 涨停板行情-跌停股池
+ # 两网及退市
+ "stock_staq_net_stop"  # 两网及退市
+ # 股东户数
+ "stock_zh_a_gdhs"  # 股东户数
+ # 中行人民币牌价历史数据查询
+ "currency_boc_sina"  # 中行人民币牌价历史数据查询
+ # A 股日频率数据-东方财富
+ "stock_zh_a_hist"  # A 股日频率数据-东方财富
+ # 盘口异动
+ "stock_changes_em"  # 盘口异动
+ # CME 比特币成交量
+ "crypto_bitcoin_cme"  # CME 比特币成交量
+ # 加密货币全球市场指数
+ "crypto_crix"  # 加密货币全球市场指数
+ # 基金规模和规模趋势
+ "fund_em_aum"  # 基金公司规模排名列表
+ "fund_em_aum_trend"  # 基金市场管理规模走势图
+ # 企业商品价格指数
+ "macro_china_qyspjg"  # 企业商品价格指数
+ "macro_china_fdi"  # 外商直接投资数据
+ # 未决房屋销售月率
+ "macro_usa_phs"  # 未决房屋销售月率
+ # 德国经济指标
+ "macro_germany_ifo"  # ifo商业景气指数
+ "macro_germany_cpi_monthly"  # 消费者物价指数月率终值
+ "macro_germany_cpi_yearly"  # 消费者物价指数年率终值
+ "macro_germany_trade_adjusted"  # 贸易帐(季调后)
+ "macro_germany_gdp"  # GDP
+ "macro_germany_retail_sale_monthly"  # 实际零售销售月率
+ "macro_germany_retail_sale_yearly"  # 实际零售销售年率
+ "macro_germany_zew"  # ZEW经济景气指数
+ # 东方财富-概念板块
+ "stock_board_concept_name_em"  # 概念板块-名称
+ "stock_board_concept_hist_em"  # 概念板块-历史行情
+ "stock_board_concept_cons_em"  # 概念板块-板块成份
 ```
 
 ## 案例演示
